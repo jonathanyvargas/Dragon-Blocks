@@ -4,10 +4,17 @@ let mic;
 let jawDrop = 0;
 let mouthRawr = 0;
 
+let cloud1
+let cloud2
+let cloud3
+let cloud4
+
 let state = 'title';
 let cnv;
 let points = 0;
 
+let player;
+let projectiles = [];
 
 function setup() {
   cnv = createCanvas(400, 400);
@@ -16,6 +23,16 @@ function setup() {
 
   mic = new p5.AudioIn()
   mic.start()
+
+
+  cloud1 = new Cloud(width * .8, height * 1.9, 10, 1);
+  cloud2 = new Cloud(width * .6, height * .8, -20, .6);
+  cloud3 = new Cloud(width * .46, height * .76, -10, .6);
+  cloud4 = new Cloud(width * .1, height * .1, 20, 1);
+
+  player = new Player();
+  projectiles[0] = new Projectile();
+  // projectiles.push(new Projectile());
 
 }
 
@@ -34,17 +51,32 @@ function draw() {
 
 }
 
+function keyPressed(){
+  if (keyCode == LEFT_ARROW){
+    player.direction = 'left'
+  } else if (keyCode == RIGHT_ARROW){
+    player.direction = 'right'
+  } else if (keyCode == UP_ARROW){
+    player.direction = 'up'
+  } else if (keyCode == DOWN_ARROW){
+    player.direction = 'down'
+  } else if (key = ' '){
+    player.direction = 'still';
+  }
+
+}
+
 function titleMouseClicked(){
 state = 'level 1';
 
 }
 
 function level1MouseClicked(){
-points++;
+// points++;
 
-if (points >= 10){
-  state = 'you win';
-}
+// if (points >= 10){
+//   state = 'you win';
+// }
 
 }
 
@@ -62,6 +94,15 @@ text('DRAGON BLOCKS', width/14, height/6)
 wingFlap = map(mouseY, 0, 400, 350, 370)
 mouthFlap = map(mic.getLevel(), 0, 1, 360,460)
 
+cloud1.display();
+cloud2.display();
+cloud3.display();
+cloud4.display();
+
+cloud1.move();
+cloud2.move();
+cloud3.move();
+cloud4.move();
 
 translate(p5.Vector.fromAngle(millis() / 1000, 40))
 
@@ -82,7 +123,29 @@ text('click here to start', width/4, height * 9/10)
 
 function level1(){
 background(0);
-text('click for points', width/4, height * 9/10);
+
+if (random(1) <= 0.01){
+  projectiles.push(new Projectile());
+}
+
+player.display();
+player.move();
+
+for (let i = 0; i < projectiles.length; i++){
+  projectiles[i].display();
+  projectiles[i].move();
+}
+
+
+for (let i = projectiles.length - 1; i >= 0; i--){
+if (dist(player.x, player.y, projectiles[i].x, projectiles[i].y) <= (player.r + projectiles[i].r) /2){
+  points++;
+
+  projectiles.splice(i, 1);
+ }
+}
+
+text('points: ' + points, width / 4, height * 9/10);
 
 }
 
@@ -219,18 +282,3 @@ function drawLeg(){
   endShape(CLOSE)
 
 }
-
-function cloud(){
-    fill(100);
-
-    push();
-    noStroke();
-    circle(10, 40, 70);
-    circle(40, 60, 50);
-    circle(40, 20, 40);
-    circle(70,20, 50);
-    circle(70, 50, 50);
-    circle(100, 40, 40);
-    pop()
-
-  }
