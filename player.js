@@ -2,7 +2,7 @@
 class Player{
 
   constructor(){
-    this.r = 60;
+    this.r = 60;  //this is diameter, not radius
     this.x = width / 2;
     this.y = height - this.r;
 
@@ -15,27 +15,6 @@ display(){
 // circle(this.x, this.y, this.r);
 image(playerImg, this.x, this.y, this.r, this.r);
 
-
-// drawBody(this.x, this.y, this.r, this.r);
-// drawJaw(this.x, this.y, this.r, this.r);
-// drawHead(this.x, this.y, this.r, this.r);
-// drawHead(this.x, this.y, this.r, this.r);
-// drawEye(this.x, this.y, this.r, this.r);
-// drawTail(this.x, this.y, this.r, this.r);
-// drawWing(this.x, this.y, this.r, this.r);
-// drawArm(this.x, this.y, this.r, this.r);
-// drawLeg(this.x, this.y, this.r, this.r);
-
-  // drawBody();
-  // drawJaw(jawDrop);
-  // drawHead(mouthFlap);
-  // drawHead(mouthRawr);
-  // drawEye();
-  // drawTail();
-  // drawWing(mouseY);
-  // drawArm();
-  // drawLeg();
-
 }
 
 move(){
@@ -45,22 +24,22 @@ move(){
 
     break;
     case 'up':
-    if (this.y > 0) {
+    if (this.y - this.r / 2 > 0) {
     this.y -= this.speed;
     }
     break;
     case 'down':
-    if (this.y < height - this.r) {
+    if (this.y < height - this.r / 2) {
     this.y += this.speed;
     }
     break;
     case 'right':
-    if (this.x < height - this.r) {
+    if (this.x < height - this.r / 2) {
     this.x += this.speed;
     }
     break;
     case 'left':
-    if (this.x > 0) {
+    if (this.x -this.r / 2 > 0) {
     this.x -= this.speed;
     }
 

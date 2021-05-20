@@ -1,8 +1,8 @@
-class Projectile {
+class Enemy {
   constructor(){
     this.r = 50
-    this.x = random(width);
-    this.y = 0 - this.r
+    this.x = 0 - this.r
+    this.y = random(width);
   }
 
 display(){
@@ -12,7 +12,7 @@ display(){
 }
 
 move(){
-  this.y++;
+  this.x ++;
 
 
 }
