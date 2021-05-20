@@ -6,7 +6,8 @@ class Projectile {
   }
 
 display(){
-  rect(this.x, this.y, this.r, this.r);
+  image(enemyImg, this.x, this.y, this.r, this.r);
+  // rect(this.x, this.y, this.r, this.r);
 
 }
 

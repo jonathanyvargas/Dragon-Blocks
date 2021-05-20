@@ -15,6 +15,15 @@ let points = 0;
 
 let player;
 let projectiles = [];
+let playerImg;
+let enemyImg;
+
+function preload(){
+playerImg = loadImage('assets/DRAGON.png')
+enemyImg = loadImage('assets/DRAGON_RED.png')
+
+}
+
 
 function setup() {
   cnv = createCanvas(400, 400);
@@ -23,6 +32,7 @@ function setup() {
 
   mic = new p5.AudioIn()
   mic.start()
+
 
 
   cloud1 = new Cloud(width * .8, height * 1.9, 10, 1);
@@ -140,10 +150,12 @@ for (let i = 0; i < projectiles.length; i++){
 for (let i = projectiles.length - 1; i >= 0; i--){
 if (dist(player.x, player.y, projectiles[i].x, projectiles[i].y) <= (player.r + projectiles[i].r) /2){
   points++;
-
   projectiles.splice(i, 1);
- }
+} else if (projectiles[i].y > height){
+  projectiles.splice(i, 1);
+  }
 }
+
 
 text('points: ' + points, width / 4, height * 9/10);
 
