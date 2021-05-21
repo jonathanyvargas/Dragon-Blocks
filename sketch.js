@@ -17,12 +17,28 @@ let health = 10;
 let player = 10;
 let projectiles = [];
 let enemies = [];
+let bossEnemy = [];
 let playerImg;
 let enemyImg;
 
+// sprite sheets and animations
+// let playerSS;
+// let enemySS;
+// let playerJSON;
+// let enemyJSON
+// let playerAnimation = [];
+// let enemyAnimation = [];
+
 function preload(){
-playerImg = loadImage('assets/DRAGON.png')
-enemyImg = loadImage('assets/DRAGON_RED.png')
+  // Still images
+  playerImg = loadImage('assets/DRAGON.png')
+  enemyImg = loadImage('assets/DRAGON_RED.png')
+
+  // spritesheets
+  // playerSS = loadImage('assets/spritesheet.png')
+  // playerJSON = loadJSON('assets/spritesheet.json')
+  // enemySS = loadImage('assets/...')
+  // enemyJSON = loadJSON('assets/...')
 
 }
 
@@ -31,6 +47,14 @@ function setup() {
   angleMode(DEGREES);
   imageMode(CENTER);
   rectMode(CENTER);
+  // frameRate(12);
+
+  // let playerFrames = playerJSON.frames;
+  // for (let i = 0; i < playerFrames.length; i++){
+  //   let pos = playerFrames[i].frame;
+  //   let img = playerSS.get(pos.x, pos.y, pos.w, pos.h);
+  //   playerAnimation.push(img);
+  // }
 
 
   mic = new p5.AudioIn()
@@ -46,6 +70,7 @@ function setup() {
   player = new Player();
   enemies[0] = new Enemy();
   projectiles.push(new Projectile);
+  bossEnemy[0] = new Boss();
   // console.log(projectiles);
   // projectiles.push(new Projectile());
 
@@ -59,7 +84,10 @@ function draw() {
   } else if (state === 'level 1'){
     level1();
    cnv.mouseClicked(level1MouseClicked);
- } else if (state === 'you lose'){
+ } else if (state === 'level 2'){
+   level2();
+  cnv.mouseClicked(level2MouseClicked);
+} else if (state === 'you lose'){
    youLose();
    cnv.mouseClicked(youLoseMouseClicked);
  } else if (state === 'you win'){
@@ -124,6 +152,15 @@ function level1MouseClicked(){
 
 }
 
+function level2MouseClicked(){
+// points++;
+
+// if (points >= 10){
+//   state = 'you win';
+// }
+
+}
+
 function youLoseMouseClicked(){
 state = 'level 1';
 points = 0;
@@ -176,7 +213,7 @@ text('click here to start', width/4, height * 9/10)
 function level1(){
 background(0);
 
-if (random(1) <= 0.01){
+if (random(1) <= 0.06){
   enemies.push(new Enemy());
 }
 
@@ -217,20 +254,78 @@ if (projectiles[i] && dist(projectiles[i].x, projectiles[i].y, enemies[j].x, ene
 
 text('points: ' + points, width / 20, height * 9.5/10);
 if (points >= 10){
+state = 'level 2'
+}
+
+text('Level 1', width / 1.40, height / 10);
+
+// text('health: ' + health, width / 1.60, height / 10);
+// if (health <= 0){
+// state = 'you lose'
+// }
+
+}
+
+function level2(){
+background(0);
+
+if (random(1) <= 0.03){
+  bossEnemy.push(new Boss());
+}
+
+for (let i = 0; i < projectiles.length; i++){
+  projectiles[i].display();
+  projectiles[i].move();
+}
+
+player.display();
+player.move();
+
+for (let j = 0; j < bossEnemy.length; j++){
+  bossEnemy[j].display();
+  bossEnemy[j].move();
+}
+
+
+
+for (let i = projectiles.length - 1; i >= 0; i--){
+for (let j = bossEnemy.length - 1; j >= 0; j--){
+// if (player && dist(player.x, player.y, enemies[j].x, enemies[j].y) <= (player.r + enemies[j].r) / 2){
+//     health--;
+//     enemies.splice(j, 1);
+//     console.log(health);
+//   }
+if (projectiles[i] && dist(projectiles[i].x, projectiles[i].y, bossEnemy[j].x, bossEnemy[j].y) <= (projectiles[i].r + bossEnemy[j].r) / 2) {
+  points += 5;
+  bossEnemy.splice(j, 1);
+  projectiles.splice(i, 1);
+
+} else if (bossEnemy[j].y > height){
+  bossEnemy.splice(j, 1);
+}
+}
+
+}
+
+
+text('points: ' + points, width / 20, height * 9.5/10);
+if (points >= 100){
 state = 'you win'
 }
 
-text('health: ' + health, width / 1.60, height / 10);
-if (health <= 0){
-state = 'you lose'
-}
+text('Boss fight', width / 1.60, height / 10);
+
+// text('health: ' + health, width / 1.60, height / 10);
+// if (health <= 0){
+// state = 'you lose'
+// }
 
 }
 
 function youWin(){
   background(0);
   textSize(80)
-  text('YOU WIN', width/24, height/6)
+  text('YOU WIN', width/20, height/6)
   textSize(25)
   text('click here to play again', width/6, height * 9/10);
 }

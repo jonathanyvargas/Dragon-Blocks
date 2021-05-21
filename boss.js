@@ -1,6 +1,6 @@
-class Enemy {
+class Boss {
   constructor(){
-    this.r = 60
+    this.r = 160
     this.x = 0 - this.r
     this.y = random(width);
   }

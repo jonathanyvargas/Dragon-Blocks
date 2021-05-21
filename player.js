@@ -14,7 +14,7 @@ class Player{
 display(){
 // circle(this.x, this.y, this.r);
 image(playerImg, this.x, this.y, this.r, this.r);
-
+   // image(playerAnimation[frameCount % playerAnimation.length], this.x, this.y, this.r, this.r);
 }
 
 move(){
