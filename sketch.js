@@ -22,11 +22,11 @@ let playerImg;
 let enemyImg;
 
 // sprite sheets and animations
-// let playerSS;
+let playerSS;
 // let enemySS;
-// let playerJSON;
+let playerJSON;
 // let enemyJSON
-// let playerAnimation = [];
+let playerAnimation = [];
 // let enemyAnimation = [];
 
 function preload(){
@@ -35,8 +35,8 @@ function preload(){
   enemyImg = loadImage('assets/DRAGON_RED.png')
 
   // spritesheets
-  // playerSS = loadImage('assets/spritesheet.png')
-  // playerJSON = loadJSON('assets/spritesheet.json')
+  playerSS = loadImage('assets/spritesheet.png')
+  playerJSON = loadJSON('assets/spritesheet.json')
   // enemySS = loadImage('assets/...')
   // enemyJSON = loadJSON('assets/...')
 
@@ -47,14 +47,15 @@ function setup() {
   angleMode(DEGREES);
   imageMode(CENTER);
   rectMode(CENTER);
-  // frameRate(12);
+  // frameRate(15);
 
-  // let playerFrames = playerJSON.frames;
-  // for (let i = 0; i < playerFrames.length; i++){
-  //   let pos = playerFrames[i].frame;
-  //   let img = playerSS.get(pos.x, pos.y, pos.w, pos.h);
-  //   playerAnimation.push(img);
-  // }
+  let playerFrames = playerJSON.frames;
+  for (let i = 0; i < playerFrames.length; i++){
+    let pos = playerFrames[i].frame;
+    let img = playerSS.get(pos.x, pos.y, pos.w, pos.h);
+    playerAnimation.push(img);
+  // console.log(playerFrames[i]);
+  }
 
 
   mic = new p5.AudioIn()

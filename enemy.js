@@ -3,6 +3,7 @@ class Enemy {
     this.r = 60
     this.x = 0 - this.r
     this.y = random(width);
+    this.speed = 2;
   }
 
 display(){
@@ -12,7 +13,7 @@ display(){
 }
 
 move(){
-  this.x ++;
+  this.x += this.speed;
 
 
 }
