@@ -21,6 +21,8 @@ let bossEnemy = [];
 let playerImg;
 let enemyImg;
 
+let logo;
+
 // sprite sheets and animations
 let playerSS;
 // let enemySS;
@@ -39,6 +41,9 @@ function preload(){
   playerJSON = loadJSON('assets/spritesheet.json')
   // enemySS = loadImage('assets/...')
   // enemyJSON = loadJSON('assets/...')
+
+  // logo
+  logo = loadImage('assets/DRAGON-BLOCKS.png')
 
 }
 
@@ -176,10 +181,10 @@ state = 'title';
 }
 
 function title(){
-
 background(0);
-textSize(40);
-text('DRAGON BLOCKS', width/14, height/6)
+textSize(30);
+// text('DRAGON BLOCKS', width/14, height/6)
+
 
 wingFlap = map(mouseY, 0, 400, 350, 370)
 mouthFlap = map(mic.getLevel(), 0, 1, 360,460)
@@ -194,6 +199,7 @@ cloud2.move();
 cloud3.move();
 cloud4.move();
 
+push();
 translate(p5.Vector.fromAngle(millis() / 1000, 40))
 
 drawBody();
@@ -206,13 +212,19 @@ drawWing(mouseY);
 drawArm();
 drawLeg();
 
-textSize(30);
+
 text('click here to start', width/4, height * 9/10)
+pop();
+
+translate(p5.Vector.fromAngle(millis() / 500, 5))
+image(logo, width * 5/10, height/10, 340, 70);
+
 
 }
 
 function level1(){
 background(0);
+
 
 if (random(1) <= 0.06){
   enemies.push(new Enemy());
@@ -252,7 +264,7 @@ if (projectiles[i] && dist(projectiles[i].x, projectiles[i].y, enemies[j].x, ene
 
 }
 
-
+fill(0,255, 0);
 text('points: ' + points, width / 20, height * 9.5/10);
 if (points >= 10){
 state = 'level 2'
@@ -326,7 +338,7 @@ text('Boss fight', width / 1.60, height / 10);
 function youWin(){
   background(0);
   textSize(80)
-  text('YOU WIN', width/20, height/6)
+  text('YOU WIN!', width/30, height/6)
   textSize(25)
   text('click here to play again', width/6, height * 9/10);
 }
