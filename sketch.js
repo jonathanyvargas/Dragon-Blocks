@@ -19,7 +19,9 @@ let projectiles = [];
 let enemies = [];
 let bossEnemy = [];
 let playerImg;
-let enemyImg;
+// let enemyImg;
+let enemyImg = [];
+let randomEnemyImg = [];
 
 let logo;
 
@@ -32,9 +34,17 @@ let playerAnimation = [];
 // let enemyAnimation = [];
 
 function preload(){
+
+// randomizer
+  for (let i = 0; i <= 4; i++){
+  randomEnemyImg[i] = loadImage("assets/DRAGON_" + i + ".png");
+
+}
+
+
   // Still images
   playerImg = loadImage('assets/DRAGON.png')
-  enemyImg = loadImage('assets/DRAGON_RED.png')
+  // enemyImg = loadImage('assets/DRAGON_RED.png')
 
   // spritesheets
   playerSS = loadImage('assets/spritesheet.png')
@@ -53,6 +63,8 @@ function setup() {
   imageMode(CENTER);
   rectMode(CENTER);
   // frameRate(15);
+
+  // console.log(enemies[int(random(enemies.length))].name);
 
   let playerFrames = playerJSON.frames;
   for (let i = 0; i < playerFrames.length; i++){

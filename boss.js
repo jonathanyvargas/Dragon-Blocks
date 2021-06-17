@@ -6,7 +6,7 @@ class Boss {
   }
 
 display(){
-  image(enemyImg, this.x, this.y, this.r, this.r);
+  image(randomEnemyImg[int(random(4))], this.x, this.y, this.r, this.r);
   // rect(this.x, this.y, this.r, this.r);
 
 }
