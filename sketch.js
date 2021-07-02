@@ -17,7 +17,7 @@ let health = 10;
 let player = 10;
 let projectiles = [];
 let enemies = [];
-let bossEnemy = [];
+let bossEnemies = [];
 let playerImg;
 // let enemyImg;
 let enemyImg = [];
@@ -88,7 +88,7 @@ function setup() {
   player = new Player();
   enemies[0] = new Enemy();
   projectiles.push(new Projectile);
-  bossEnemy[0] = new Boss();
+  bossEnemies[0] = new Boss();
   // console.log(projectiles);
   // projectiles.push(new Projectile());
 
@@ -198,6 +198,7 @@ textSize(30);
 // text('DRAGON BLOCKS', width/14, height/6)
 
 
+
 wingFlap = map(mouseY, 0, 400, 350, 370)
 mouthFlap = map(mic.getLevel(), 0, 1, 360,460)
 
@@ -224,18 +225,30 @@ drawWing(mouseY);
 drawArm();
 drawLeg();
 
-
 text('click here to start', width/4, height * 9/10)
 pop();
 
+// push();
 translate(p5.Vector.fromAngle(millis() / 500, 5))
 image(logo, width * 5/10, height/10, 340, 70);
+pop();
 
+push();
+textSize(20);
+fill(0, 255, 0);
+text('Arrows = move', width / 1.60, height / 4);
+text('Any key = fire', width / 1.60, height / 3);
+pop();
 
 }
 
 function level1(){
 background(0);
+// fill(100);
+
+cloudOne();
+cloudTwo();
+cloudThree();
 
 
 if (random(1) <= 0.06){
@@ -259,11 +272,15 @@ for (let j = 0; j < enemies.length; j++){
 
 for (let i = projectiles.length - 1; i >= 0; i--){
 for (let j = enemies.length - 1; j >= 0; j--){
+
 // if (player && dist(player.x, player.y, enemies[j].x, enemies[j].y) <= (player.r + enemies[j].r) / 2){
-//     health--;
-//     enemies.splice(j, 1);
-//     console.log(health);
+// state = 'you lose'
 //   }
+
+if (dist(player.x, player.y, enemies[j].x, enemies[j].y) <= (player.r + enemies[j].r) / 2){
+  state = 'you lose'
+}
+
 if (projectiles[i] && dist(projectiles[i].x, projectiles[i].y, enemies[j].x, enemies[j].y) <= (projectiles[i].r + enemies[j].r) / 2) {
   points++;
   enemies.splice(j, 1);
@@ -276,11 +293,18 @@ if (projectiles[i] && dist(projectiles[i].x, projectiles[i].y, enemies[j].x, ene
 
 }
 
+
+
 fill(0,255, 0);
 text('points: ' + points, width / 20, height * 9.5/10);
+text('/10', width / 2.9, height * 9.5/10);
 if (points >= 10){
 state = 'level 2'
 }
+
+// if (dist(Player.x, Player.y, Enemy.x, Enemy.y) <= (Player.r + Enemy.r) / 2){
+//   state = 'you lose'
+// }
 
 text('Level 1', width / 1.40, height / 10);
 
@@ -294,8 +318,13 @@ text('Level 1', width / 1.40, height / 10);
 function level2(){
 background(0);
 
+cloudOne();
+cloudTwo();
+cloudThree();
+
+
 if (random(1) <= 0.03){
-  bossEnemy.push(new Boss());
+  bossEnemies.push(new Boss());
 }
 
 for (let i = 0; i < projectiles.length; i++){
@@ -306,27 +335,32 @@ for (let i = 0; i < projectiles.length; i++){
 player.display();
 player.move();
 
-for (let j = 0; j < bossEnemy.length; j++){
-  bossEnemy[j].display();
-  bossEnemy[j].move();
+for (let j = 0; j < bossEnemies.length; j++){
+  bossEnemies[j].display();
+  bossEnemies[j].move();
 }
 
 
 
 for (let i = projectiles.length - 1; i >= 0; i--){
-for (let j = bossEnemy.length - 1; j >= 0; j--){
+for (let j = bossEnemies.length - 1; j >= 0; j--){
 // if (player && dist(player.x, player.y, enemies[j].x, enemies[j].y) <= (player.r + enemies[j].r) / 2){
 //     health--;
 //     enemies.splice(j, 1);
 //     console.log(health);
 //   }
-if (projectiles[i] && dist(projectiles[i].x, projectiles[i].y, bossEnemy[j].x, bossEnemy[j].y) <= (projectiles[i].r + bossEnemy[j].r) / 2) {
+
+if (dist(player.x, player.y, bossEnemies[j].x, bossEnemies[j].y) <= (player.r + bossEnemies[j].r) / 2){
+  state = 'you lose'
+}
+
+if (projectiles[i] && dist(projectiles[i].x, projectiles[i].y, bossEnemies[j].x, bossEnemies[j].y) <= (projectiles[i].r + bossEnemies[j].r) / 2) {
   points += 5;
-  bossEnemy.splice(j, 1);
+  bossEnemies.splice(j, 1);
   projectiles.splice(i, 1);
 
-} else if (bossEnemy[j].y > height){
-  bossEnemy.splice(j, 1);
+} else if (bossEnemies[j].y > height){
+  bossEnemies.splice(j, 1);
 }
 }
 
@@ -334,6 +368,7 @@ if (projectiles[i] && dist(projectiles[i].x, projectiles[i].y, bossEnemy[j].x, b
 
 
 text('points: ' + points, width / 20, height * 9.5/10);
+text('/100', width / 2.6, height * 9.5/10);
 if (points >= 100){
 state = 'you win'
 }
@@ -350,17 +385,21 @@ text('Boss fight', width / 1.60, height / 10);
 function youWin(){
   background(0);
   textSize(80)
-  text('YOU WIN!', width/30, height/6)
+  text('YOU WIN!', width/30, height/5.3)
   textSize(25)
-  text('click here to play again', width/6, height * 9/10);
+  text('click here to play again', width/6, height * 9.5/10);
+  player.display();
+  player.move();
 }
 
 function youLose(){
   background(0);
-  textSize(60)
-  text('GAME OVER', width/24, height/6)
+  textSize(70)
+  text('YOU LOSE!', width/30, height/5.7)
   textSize(30)
-  text('click here to restart', width/6, height * 9/10);
+  text('click here to restart', width/6, height * 9.5/10);
+  player.display();
+  player.move();
 }
 
 function drawBody(){
@@ -485,4 +524,44 @@ function drawLeg(){
   vertex(width * .47, height * .85);
   endShape(CLOSE)
 
+}
+
+function cloudOne(){
+  push();
+  fill(100);
+  noStroke();
+  circle(5, 20, 35);
+  circle(20, 30, 25);
+  circle(20, 10, 20);
+  circle(35, 10, 25);
+  circle(35, 25, 25);
+  circle(50, 20, 20);
+  pop();
+
+}
+
+function cloudTwo(){
+  push();
+  fill(100);
+  noStroke();
+  circle(105, 120, 35);
+  circle(120, 130, 25);
+  circle(120, 110, 20);
+  circle(135, 110, 25);
+  circle(135, 125, 25);
+  circle(150, 120, 20);
+  pop();
+}
+
+function cloudThree(){
+  push();
+  fill(100);
+  noStroke();
+  circle(305, 370, 35);
+  circle(320, 380, 25);
+  circle(320, 360, 20);
+  circle(335, 360, 25);
+  circle(335, 375, 25);
+  circle(350, 370, 20);
+  pop();
 }
